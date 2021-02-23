@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.RecyclerItemBinding
 
-class DestinationsRecyclerAdapter : RecyclerView.Adapter<DestinationsRecyclerAdapter.DestinationViewHolder>() {
+class DestinationsRecyclerAdapter(private val listener: OnDestinationClickListener) : RecyclerView.Adapter<DestinationsRecyclerAdapter.DestinationViewHolder>() {
 
     private var interestPoints = ArrayList<InterestPoint>()
 
@@ -27,7 +27,17 @@ class DestinationsRecyclerAdapter : RecyclerView.Adapter<DestinationsRecyclerAda
     override fun getItemCount() = interestPoints.size
 
 
-    class DestinationViewHolder(private val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    inner class DestinationViewHolder(private val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    val interestPoint = interestPoints[adapterPosition]
+                    listener.onItemClick(interestPoint)
+                }
+            }
+        }
 
         fun bind(interestPoint: InterestPoint) {
             binding.apply {
@@ -37,4 +47,7 @@ class DestinationsRecyclerAdapter : RecyclerView.Adapter<DestinationsRecyclerAda
         }
     }
 
+    interface OnDestinationClickListener {
+        fun onItemClick(interestPoint: InterestPoint)
+    }
 }

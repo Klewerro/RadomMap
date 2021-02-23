@@ -6,19 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
 import com.klewerro.radommap.viewmodels.DestinationsViewModel
 
-class DestinationsFragment : Fragment() {
+class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinationClickListener {
 
     private var _binding: FragmentDestinationsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DestinationsViewModel by viewModels()
-    private val destinationsRecyclerAdapter = DestinationsRecyclerAdapter()
+    private val destinationsRecyclerAdapter = DestinationsRecyclerAdapter(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentDestinationsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,5 +46,10 @@ class DestinationsFragment : Fragment() {
         //Avoid memory leak
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClick(interestPoint: InterestPoint) {
+        val action = DestinationsFragmentDirections.actionDestinationsFragmentToMapFragment(interestPoint)
+        findNavController().navigate(action)
     }
 }
