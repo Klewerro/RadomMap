@@ -5,14 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import com.klewerro.radommap.R
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
+import com.klewerro.radommap.viewmodels.DestinationsViewModel
 
 class DestinationsFragment : Fragment() {
 
     private var _binding: FragmentDestinationsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: DestinationsViewModel by viewModels()
+    private val destinationsRecyclerAdapter = DestinationsRecyclerAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -22,8 +25,18 @@ class DestinationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            findNavController().navigate(R.id.action_destinationsFragment_to_mapFragment)
+        binding.destinationsRecyclerView.apply {
+            adapter = destinationsRecyclerAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel.interestPoints.observe(viewLifecycleOwner) { interestCategories ->
+            val points = interestCategories.flatMap { it.points }
+            destinationsRecyclerAdapter.setList(points)
         }
     }
 
