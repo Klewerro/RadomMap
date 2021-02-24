@@ -12,6 +12,7 @@ class DestinationsRecyclerAdapter(private val listener: OnDestinationClickListen
 
     fun setList(items: List<InterestPoint>) {
         interestPoints = ArrayList(items)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DestinationViewHolder {
