@@ -2,8 +2,11 @@ package com.klewerro.radommap.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class DestinationsRepository {
+@Singleton
+class DestinationsRepository @Inject constructor() {
 
     fun getAllInterestCategories(): LiveData<List<InterestCategory>> {
         val result = MutableLiveData<List<InterestCategory>>()

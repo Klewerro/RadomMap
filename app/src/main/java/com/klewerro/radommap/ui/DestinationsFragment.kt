@@ -14,7 +14,9 @@ import com.klewerro.radommap.R
 import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
 import com.klewerro.radommap.viewmodels.DestinationsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinationClickListener {
 
     private var _binding: FragmentDestinationsBinding? = null

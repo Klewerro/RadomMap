@@ -6,10 +6,13 @@ import androidx.lifecycle.ViewModel
 import com.klewerro.radommap.data.DestinationsRepository
 import com.klewerro.radommap.data.InterestCategory
 import com.klewerro.radommap.data.InterestPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DestinationsViewModel : ViewModel() {
-
-    private val repository = DestinationsRepository()
+@HiltViewModel
+class DestinationsViewModel @Inject constructor(
+    repository: DestinationsRepository
+)  : ViewModel() {
 
     private val interestPoints = repository.getAllInterestPoints()
     val interestCategories = repository.getAllInterestCategories()
