@@ -3,6 +3,7 @@ package com.klewerro.radommap.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.klewerro.radommap.data.BaseRepository
 import com.klewerro.radommap.data.DestinationsRepository
 import com.klewerro.radommap.data.InterestCategory
 import com.klewerro.radommap.data.InterestPoint
@@ -11,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DestinationsViewModel @Inject constructor(
-    repository: DestinationsRepository
+    repository: BaseRepository
 )  : ViewModel() {
 
     private val interestPoints = repository.getAllInterestPoints()
@@ -27,11 +28,11 @@ class DestinationsViewModel @Inject constructor(
     fun setSelectedCategory(position: Int) {
         val selectedCategory = interestCategories.value!!.get(position)
         _selectedCategory.postValue(selectedCategory)
-        _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id))
+        _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
     }
 
 
-    private fun getSelectedInterestPoints(id: Int): List<InterestPoint> {
+    private fun getSelectedInterestPoints(id: String): List<InterestPoint> {
         val list = interestPoints.value?.filter { it.categoryId == id }
         return list!!
     }

@@ -23,6 +23,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
     private val binding get() = _binding!!
     private val viewModel: DestinationsViewModel by viewModels()
     private val destinationsRecyclerAdapter = DestinationsRecyclerAdapter(this)
+    private var isFirstItemSelection = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -40,6 +41,10 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
         binding.categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(a: AdapterView<*>?, v: View?, position: Int, id: Long) {
+                if (isFirstItemSelection) {
+                    isFirstItemSelection = false
+                    return
+                }
                 viewModel.setSelectedCategory(position)
             }
 
