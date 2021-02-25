@@ -35,6 +35,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             onResume()
             getMapAsync(this@MapFragment)
         }
+
+        viewModel.interestPoint.observe(viewLifecycleOwner) { interestPoint ->
+            binding.descriptionTextView.text = interestPoint.description
+        }
     }
 
     /**
