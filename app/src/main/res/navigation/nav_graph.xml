@@ -17,10 +17,13 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.klewerro.radommap.ui.MapFragment"
-        android:label="fragment_map"
+        android:label="{title}"
         tools:layout="@layout/fragment_map" >
         <argument
             android:name="interestPoint"
             app:argType="com.klewerro.radommap.data.InterestPoint" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 </navigation>

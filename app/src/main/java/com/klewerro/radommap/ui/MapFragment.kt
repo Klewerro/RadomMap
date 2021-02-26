@@ -36,9 +36,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             getMapAsync(this@MapFragment)
         }
 
-        viewModel.interestPoint.observe(viewLifecycleOwner) { interestPoint ->
-            binding.descriptionTextView.text = interestPoint.description
-        }
+
     }
 
     /**
@@ -51,10 +49,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.setPadding(0, 0, 0, 130)
+
+        viewModel.interestPoint.observe(viewLifecycleOwner) { interestPoint ->
+            val markerPosition = interestPoint.coordinates?.let { LatLng(it.latitude, it.longitude) }
+            if (markerPosition != null) {
+                val titleText = "${interestPoint.coordinates.latitude}; ${interestPoint.coordinates.longitude}"
+                googleMap.addMarker(MarkerOptions().position(markerPosition).title(titleText))
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 15f))
+            }
+
+            binding.descriptionTextView.text = interestPoint.description
+        }
     }
 
     override fun onDestroyView() {

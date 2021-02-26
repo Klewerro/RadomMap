@@ -76,7 +76,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
     }
 
     override fun onItemClick(interestPoint: InterestPoint) {
-        val action = DestinationsFragmentDirections.actionDestinationsFragmentToMapFragment(interestPoint)
+        val action = DestinationsFragmentDirections.actionDestinationsFragmentToMapFragment(interestPoint, interestPoint.name!!)
         findNavController().navigate(action)
     }
 }
