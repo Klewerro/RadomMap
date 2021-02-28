@@ -20,14 +20,33 @@
         app:behavior_hideable="false"
         app:behavior_peekHeight="50dp">
 
-        <TextView
-            android:id="@+id/description_textView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:justificationMode="inter_word"
-            android:padding="8dp"
-            tools:text="Description text\nLine2"/>
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/description_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:justificationMode="inter_word"
+                tools:text="Description text\nLine2"/>
+
+            <TextView
+                android:id="@+id/url_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_website_18"
+                android:drawablePadding="4dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:autoLink="web"
+                tools:text="www.google.pl"
+                tools:visibility="visible"/>
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

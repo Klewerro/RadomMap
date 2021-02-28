@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -60,6 +61,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
 
             binding.descriptionTextView.text = interestPoint.description
+            if (interestPoint.url != null) {
+                binding.urlTextView.text = interestPoint.url
+                binding.urlTextView.isVisible = true
+            }
         }
     }
 
