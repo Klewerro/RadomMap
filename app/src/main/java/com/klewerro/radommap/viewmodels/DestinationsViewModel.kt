@@ -1,20 +1,17 @@
 package com.klewerro.radommap.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.klewerro.radommap.data.BaseRepository
-import com.klewerro.radommap.data.DestinationsRepository
-import com.klewerro.radommap.data.InterestCategory
-import com.klewerro.radommap.data.InterestPoint
+import androidx.lifecycle.*
+import com.klewerro.radommap.data.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class DestinationsViewModel @Inject constructor(
-    repository: BaseRepository
+    repository: FirebaseRepository,
+    private val state: SavedStateHandle
 )  : ViewModel() {
 
+    // LiveData
     private val interestPoints = repository.getAllInterestPoints()
     val interestCategories = repository.getAllInterestCategories()
 
@@ -29,10 +26,39 @@ class DestinationsViewModel @Inject constructor(
     }
 
 
+    // States
+    var editTextState = state.get<String>(STATE_EDITTEXT_STATE) ?: ""
+        set(value) {
+            field = value
+            state.set(STATE_EDITTEXT_STATE, value)
+        }
+
+    var selectedSpinnerPosition = state.get<Int>(STATE_SPINNER_POSITION) ?: 0
+        set(value) {
+            field = value
+            state.set(STATE_SPINNER_POSITION, value)
+        }
+
 
 
     fun setSelectedCategory(position: Int) {
+        if (selectedSpinnerPosition == - 1) {
+            selectedSpinnerPosition = 0
+            return
+        }
+
         val selectedCategory = interestCategories.value!!.get(position)
+        _selectedCategory.postValue(selectedCategory)
+        _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
+        selectedSpinnerPosition = position
+    }
+
+    fun initSelectedCategory() {
+        if (selectedSpinnerPosition == - 1) {
+            selectedSpinnerPosition = 0
+        }
+
+        val selectedCategory = interestCategories.value!!.get(selectedSpinnerPosition)
         _selectedCategory.postValue(selectedCategory)
         _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
     }
@@ -57,5 +83,8 @@ class DestinationsViewModel @Inject constructor(
         return result
     }
 
-
+    companion object {
+        private const val STATE_SPINNER_POSITION = "spinnerPositionState"
+        private const val STATE_EDITTEXT_STATE = "etTextState"
+    }
 }

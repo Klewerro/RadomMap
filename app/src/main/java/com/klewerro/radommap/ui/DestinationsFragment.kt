@@ -33,6 +33,10 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Loading saved state from VM
+        binding.editText.setText(viewModel.editTextState)
+
         binding.destinationsRecyclerView.apply {
             adapter = destinationsRecyclerAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -42,7 +46,9 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
         binding.categoriesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(a: AdapterView<*>?, v: View?, position: Int, id: Long) {
                 if (isFirstItemSelection) {
+                    // Loading saved state from VM
                     isFirstItemSelection = false
+                    binding.categoriesSpinner.setSelection(viewModel.selectedSpinnerPosition!!)
                     return
                 }
                 viewModel.setSelectedCategory(position)
@@ -52,10 +58,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
             }
 
         }
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         viewModel.categoryInterestPoints.observe(viewLifecycleOwner) { interestPoints ->
             destinationsRecyclerAdapter.setList(interestPoints)
         }
@@ -70,6 +73,11 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                 viewModel.initSelectedCategory()
             }
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        isFirstItemSelection = true
     }
 
     override fun onDestroyView() {
