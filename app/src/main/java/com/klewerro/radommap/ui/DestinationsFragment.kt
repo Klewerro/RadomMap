@@ -60,12 +60,15 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
             destinationsRecyclerAdapter.setList(interestPoints)
         }
 
-        viewModel.interestCategories.observe(viewLifecycleOwner) {interestCategories ->
-            binding.categoriesSpinner.adapter = ArrayAdapter(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
-                interestCategories.map { it.name }
-            )
+        viewModel.mediatorLiveDataCategories.observe(viewLifecycleOwner) { categories ->
+            if (categories != null) {
+                binding.categoriesSpinner.adapter = ArrayAdapter(
+                    requireContext(),
+                    R.layout.support_simple_spinner_dropdown_item,
+                    categories.map { it.name }
+                )
+                viewModel.initSelectedCategory()
+            }
         }
     }
 

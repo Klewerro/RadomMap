@@ -24,6 +24,12 @@ class DestinationsViewModel @Inject constructor(
     private val _categoryInterestPoints = MutableLiveData<List<InterestPoint>>()
     val categoryInterestPoints: LiveData<List<InterestPoint>> = _categoryInterestPoints
 
+    val mediatorLiveDataCategories = interestCategories.combineWith(interestPoints) { categories, points ->
+        categories
+    }
+
+
+
 
     fun setSelectedCategory(position: Int) {
         val selectedCategory = interestCategories.value!!.get(position)
@@ -36,4 +42,20 @@ class DestinationsViewModel @Inject constructor(
         val list = interestPoints.value?.filter { it.categoryId == id }
         return list!!
     }
+
+    private fun <T, K, R> LiveData<T>.combineWith(
+        liveData: LiveData<K>,
+        block: (T?, K?) -> R
+    ): LiveData<R> {
+        val result = MediatorLiveData<R>()
+        result.addSource(this) {
+            result.value = block(this.value, liveData.value)
+        }
+        result.addSource(liveData) {
+            result.value = block(this.value, liveData.value)
+        }
+        return result
+    }
+
+
 }
