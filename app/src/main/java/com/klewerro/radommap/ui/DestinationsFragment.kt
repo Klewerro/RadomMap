@@ -59,7 +59,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
             }
         }
 
-        binding.tryAgainButton.setOnClickListener {
+        binding.loadingLayout.tryAgainButton.setOnClickListener {
             viewModel.reFetchData()
         }
 
@@ -81,20 +81,20 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
             when(status) {
                 0 -> {
                     binding.contentLinearLayout.isVisible = false
-                    binding.progressLinearLayout.isVisible = true
-                    binding.progressBar.isVisible = true
-                    binding.progressStatusTextView.text = "Fetching data from Firebase [0/2]"
+                    binding.loadingLayout.root.isVisible = true
+                    binding.loadingLayout.progressBar.isVisible = true
+                    binding.loadingLayout.progressStatusTextView.text = "Fetching data from Firebase [0/2]"
                 }
                 1 -> {
-                    binding.progressStatusTextView.text = "Fetching data from Firebase [1/2]"
+                    binding.loadingLayout.progressStatusTextView.text = "Fetching data from Firebase [1/2]"
                 }
                 2 -> {
                     binding.contentLinearLayout.isVisible = true
-                    binding.progressLinearLayout.isVisible = false
+                    binding.loadingLayout.root.isVisible = false
                 }
                 -1 -> {
-                    binding.progressBar.isVisible = false
-                    binding.progressStatusTextView.text = "Error while fetching data from Firebase. Please try again."
+                    binding.loadingLayout.progressBar.isVisible = false
+                    binding.loadingLayout.progressStatusTextView.text = "Error while fetching data from Firebase. Please try again."
                 }
             }
         }

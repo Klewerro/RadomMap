@@ -32,38 +32,9 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/progress_linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center" />
-
-        <TextView
-            android:id="@+id/progressStatus_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/progressBar"
-            android:layout_centerInParent="true"
-            android:textAlignment="center"
-            tools:text="Downloading 1/2" />
-
-        <Button
-            android:id="@+id/tryAgain_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Try again"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/progressStatus_textView"
-            android:layout_marginTop="8dp" />
-
-    </RelativeLayout>
+    <include
+        android:id="@+id/loadingLayout"
+        layout="@layout/fragment_destinations_loading" />
 
 
 </LinearLayout>
