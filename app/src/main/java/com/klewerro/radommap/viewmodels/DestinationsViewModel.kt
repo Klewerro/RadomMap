@@ -7,13 +7,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DestinationsViewModel @Inject constructor(
-    private val repository: FirebaseRepository,
+    private val repository: BaseRepository,
     private val state: SavedStateHandle
 )  : ViewModel() {
 
     // LiveData
-    private val interestPoints = repository.getAllInterestPoints()
-    private val interestCategories = repository.getAllInterestCategories()
+    private val interestPoints = repository.interestPoints
+    private val interestCategories = repository.interestCategories
 
     private val _selectedCategory = MutableLiveData<InterestCategory>()
     val selectedCategory: LiveData<InterestCategory> = _selectedCategory
@@ -58,6 +58,7 @@ class DestinationsViewModel @Inject constructor(
     }
 
     fun reFetchData() {
+        repository.resetDownloadStatus()
         repository.getAllInterestPoints()
         repository.getAllInterestCategories()
     }

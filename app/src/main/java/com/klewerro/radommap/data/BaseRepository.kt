@@ -3,6 +3,12 @@ package com.klewerro.radommap.data
 import androidx.lifecycle.LiveData
 
 interface BaseRepository {
-    fun getAllInterestCategories(): LiveData<List<InterestCategory>>
-    fun getAllInterestPoints(): LiveData<List<InterestPoint>>
+    val interestPoints: LiveData<List<InterestPoint>>
+    val interestCategories: LiveData<List<InterestCategory>>
+    val downloadStatus: LiveData<Int>
+
+    fun getAllInterestCategories()
+    fun getAllInterestPoints()
+    fun increaseStatus(value: Int)
+    fun resetDownloadStatus()
 }
