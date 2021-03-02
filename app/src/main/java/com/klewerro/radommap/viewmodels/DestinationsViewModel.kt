@@ -22,6 +22,9 @@ class DestinationsViewModel @Inject constructor(
     val categoryInterestPoints: LiveData<List<InterestPoint>> = _categoryInterestPoints
 
     val mediatorLiveDataCategories = interestCategories.combineWith(interestPoints) { categories, points ->
+        if (categories != null && points != null) {
+            initSelectedCategory()
+        }
         categories
     }
 

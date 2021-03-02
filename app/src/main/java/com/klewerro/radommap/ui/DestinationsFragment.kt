@@ -70,7 +70,6 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                     R.layout.support_simple_spinner_dropdown_item,
                     categories.map { it.name }
                 )
-                viewModel.initSelectedCategory()
             }
         }
     }
