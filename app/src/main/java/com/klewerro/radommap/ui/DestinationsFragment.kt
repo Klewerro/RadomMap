@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,7 +57,10 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
+        }
 
+        binding.tryAgainButton.setOnClickListener {
+            viewModel.reFetchData()
         }
 
         viewModel.categoryInterestPoints.observe(viewLifecycleOwner) { interestPoints ->
@@ -70,6 +74,28 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                     R.layout.support_simple_spinner_dropdown_item,
                     categories.map { it.name }
                 )
+            }
+        }
+
+        viewModel.downloadStatus.observe(viewLifecycleOwner) { status ->
+            when(status) {
+                0 -> {
+                    binding.contentLinearLayout.isVisible = false
+                    binding.progressLinearLayout.isVisible = true
+                    binding.progressBar.isVisible = true
+                    binding.progressStatusTextView.text = "Fetching data from Firebase [0/2]"
+                }
+                1 -> {
+                    binding.progressStatusTextView.text = "Fetching data from Firebase [1/2]"
+                }
+                2 -> {
+                    binding.contentLinearLayout.isVisible = true
+                    binding.progressLinearLayout.isVisible = false
+                }
+                -1 -> {
+                    binding.progressBar.isVisible = false
+                    binding.progressStatusTextView.text = "Error while fetching data from Firebase. Please try again."
+                }
             }
         }
     }

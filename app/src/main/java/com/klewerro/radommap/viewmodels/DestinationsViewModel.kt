@@ -7,13 +7,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DestinationsViewModel @Inject constructor(
-    repository: FirebaseRepository,
+    private val repository: FirebaseRepository,
     private val state: SavedStateHandle
 )  : ViewModel() {
 
     // LiveData
     private val interestPoints = repository.getAllInterestPoints()
-    val interestCategories = repository.getAllInterestCategories()
+    private val interestCategories = repository.getAllInterestCategories()
 
     private val _selectedCategory = MutableLiveData<InterestCategory>()
     val selectedCategory: LiveData<InterestCategory> = _selectedCategory
@@ -28,6 +28,7 @@ class DestinationsViewModel @Inject constructor(
         categories
     }
 
+    val downloadStatus = repository.downloadStatus
 
     // States
     var editTextState = state.get<String>(STATE_EDITTEXT_STATE) ?: ""
@@ -56,7 +57,13 @@ class DestinationsViewModel @Inject constructor(
         selectedSpinnerPosition = position
     }
 
-    fun initSelectedCategory() {
+    fun reFetchData() {
+        repository.getAllInterestPoints()
+        repository.getAllInterestCategories()
+    }
+
+
+    private fun initSelectedCategory() {
         if (selectedSpinnerPosition == - 1) {
             selectedSpinnerPosition = 0
         }
@@ -65,7 +72,6 @@ class DestinationsViewModel @Inject constructor(
         _selectedCategory.postValue(selectedCategory)
         _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
     }
-
 
     private fun getSelectedInterestPoints(id: String): List<InterestPoint> {
         val list = interestPoints.value?.filter { it.categoryId == id }
