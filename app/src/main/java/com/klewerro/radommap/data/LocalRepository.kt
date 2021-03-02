@@ -3,7 +3,7 @@ package com.klewerro.radommap.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class DestinationsRepository: BaseRepository {
+class LocalRepository: BaseRepository {
 
     private val _interestPoints = MutableLiveData<List<InterestPoint>>()
     override val interestPoints: LiveData<List<InterestPoint>> = _interestPoints

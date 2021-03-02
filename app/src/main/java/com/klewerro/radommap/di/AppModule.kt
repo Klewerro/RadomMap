@@ -1,7 +1,7 @@
 package com.klewerro.radommap.di
 
 import com.klewerro.radommap.data.BaseRepository
-import com.klewerro.radommap.data.DestinationsRepository
+import com.klewerro.radommap.data.LocalRepository
 import com.klewerro.radommap.data.FirebaseRepository
 import dagger.Module
 import dagger.Provides
