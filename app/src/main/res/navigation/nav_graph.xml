@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/destinationsFragment"
         android:name="com.klewerro.radommap.ui.DestinationsFragment"
-        android:label="fragment_destinations"
-        tools:layout="@layout/fragment_destinations" >
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_destinations">
         <action
             android:id="@+id/action_destinationsFragment_to_mapFragment"
             app:destination="@id/mapFragment" />

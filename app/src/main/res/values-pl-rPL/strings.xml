@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Mapa Radomia</string>
     <string name="title_activity_maps">Mapa</string>
+    <string name="try_again">Spróbuj ponownie</string>
+    <string name="fetching_data">Pobieranie danych z Firebase [%1$d/%2$d]</string>
+    <string name="error_fetching_data_try_again">Wystąpił błąd podczas pobierania danych z Firebase. Spóbuj proszę ponownie.</string>
 </resources>

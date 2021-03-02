@@ -49,7 +49,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                 if (isFirstItemSelection) {
                     // Loading saved state from VM
                     isFirstItemSelection = false
-                    binding.categoriesSpinner.setSelection(viewModel.selectedSpinnerPosition!!)
+                    binding.categoriesSpinner.setSelection(viewModel.selectedSpinnerPosition)
                     return
                 }
                 viewModel.setSelectedCategory(position)
@@ -83,10 +83,10 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                     binding.contentLinearLayout.isVisible = false
                     binding.loadingLayout.root.isVisible = true
                     binding.loadingLayout.progressBar.isVisible = true
-                    binding.loadingLayout.progressStatusTextView.text = "Fetching data from Firebase [0/2]"
+                    binding.loadingLayout.progressStatusTextView.text = getString(R.string.fetching_data, 0, 2)
                 }
                 1 -> {
-                    binding.loadingLayout.progressStatusTextView.text = "Fetching data from Firebase [1/2]"
+                    binding.loadingLayout.progressStatusTextView.text = getString(R.string.fetching_data, 1, 2)
                 }
                 2 -> {
                     binding.contentLinearLayout.isVisible = true
@@ -94,7 +94,7 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
                 }
                 -1 -> {
                     binding.loadingLayout.progressBar.isVisible = false
-                    binding.loadingLayout.progressStatusTextView.text = "Error while fetching data from Firebase. Please try again."
+                    binding.loadingLayout.progressStatusTextView.text = getString(R.string.error_fetching_data_try_again)
                 }
             }
         }
