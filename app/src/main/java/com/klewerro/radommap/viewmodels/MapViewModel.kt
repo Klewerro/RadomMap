@@ -8,5 +8,6 @@ import com.klewerro.radommap.data.InterestPoint
 class MapViewModel(state: SavedStateHandle) : ViewModel() {
 
     val interestPoint: LiveData<InterestPoint> = state.getLiveData<InterestPoint>("interestPoint")
+    val categoryName: LiveData<String?> = state.getLiveData<String>("categoryName")
 
 }

@@ -11,9 +11,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.klewerro.radommap.MainActivity
 import com.klewerro.radommap.R
 import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
+import com.klewerro.radommap.utils.ExtensionFunctions.setFragmentSubtitle
 import com.klewerro.radommap.viewmodels.DestinationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,12 +31,13 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         _binding = FragmentDestinationsBinding.inflate(inflater, container, false)
+        // Removing category text from actionBar after navigate back
+        setFragmentSubtitle(null)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Loading saved state from VM
         binding.editText.setText(viewModel.editTextState)
 
@@ -106,13 +109,17 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
     }
 
     override fun onDestroyView() {
-        //Avoid memory leak
+        // Avoid memory leak
         super.onDestroyView()
         _binding = null
     }
 
     override fun onItemClick(interestPoint: InterestPoint) {
-        val action = DestinationsFragmentDirections.actionDestinationsFragmentToMapFragment(interestPoint, interestPoint.name!!)
+        val action = DestinationsFragmentDirections.actionDestinationsFragmentToMapFragment(
+            interestPoint,
+            interestPoint.name!!,
+            viewModel.selectedCategory.value?.name
+        )
         findNavController().navigate(action)
     }
 }

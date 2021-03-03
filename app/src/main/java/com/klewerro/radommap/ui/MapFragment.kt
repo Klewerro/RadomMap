@@ -3,18 +3,20 @@ package com.klewerro.radommap.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.klewerro.radommap.MainActivity
 import com.klewerro.radommap.databinding.FragmentMapBinding
+import com.klewerro.radommap.utils.ExtensionFunctions.setFragmentSubtitle
 import com.klewerro.radommap.utils.MetricsUtil.convertPixelsToPx
 import com.klewerro.radommap.viewmodels.MapViewModel
 
@@ -40,7 +42,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             getMapAsync(this@MapFragment)
         }
 
-
+        viewModel.categoryName.observe(viewLifecycleOwner) { categoryName ->
+            setFragmentSubtitle(categoryName)
+        }
     }
 
     /**
