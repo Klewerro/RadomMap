@@ -1,5 +1,7 @@
 package com.klewerro.radommap.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -62,8 +64,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
             binding.descriptionTextView.text = interestPoint.description
             if (interestPoint.url != null) {
-                binding.urlTextView.text = interestPoint.url
                 binding.urlTextView.isVisible = true
+                binding.urlTextView.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(interestPoint.url))
+                    startActivity(intent)
+                }
             }
         }
     }
