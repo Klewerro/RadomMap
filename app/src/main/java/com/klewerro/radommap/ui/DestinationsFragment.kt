@@ -1,17 +1,18 @@
 package com.klewerro.radommap.ui
 
+import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.klewerro.radommap.MainActivity
 import com.klewerro.radommap.R
 import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
@@ -43,7 +44,11 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
         binding.destinationsRecyclerView.apply {
             adapter = destinationsRecyclerAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                LinearLayoutManager(requireContext())
+            } else {
+                GridLayoutManager(requireActivity(), 2)
+            }
             setHasFixedSize(true)
         }
 
