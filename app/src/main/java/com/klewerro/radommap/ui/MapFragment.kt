@@ -13,9 +13,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.klewerro.radommap.MainActivity
+import com.klewerro.radommap.R
 import com.klewerro.radommap.databinding.FragmentMapBinding
+import com.klewerro.radommap.utils.ExtensionFunctions.isDarkThemeOn
 import com.klewerro.radommap.utils.ExtensionFunctions.setFragmentSubtitle
 import com.klewerro.radommap.utils.MetricsUtil.convertPixelsToPx
 import com.klewerro.radommap.viewmodels.MapViewModel
@@ -57,6 +60,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         googleMap.setPadding(0, 0, 0, 50.convertPixelsToPx())
+
+        if (requireContext().isDarkThemeOn()) {
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_style)
+            )
+        }
 
         viewModel.interestPoint.observe(viewLifecycleOwner) { interestPoint ->
             val markerPosition = interestPoint.coordinates?.let { LatLng(it.latitude, it.longitude) }
