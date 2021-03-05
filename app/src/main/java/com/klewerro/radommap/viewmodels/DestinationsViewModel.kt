@@ -31,12 +31,6 @@ class DestinationsViewModel @Inject constructor(
     val downloadStatus = repository.downloadStatus
 
     // States
-    var editTextState = state.get<String>(STATE_EDITTEXT_STATE) ?: ""
-        set(value) {
-            field = value
-            state.set(STATE_EDITTEXT_STATE, value)
-        }
-
     var selectedSpinnerPosition = state.get<Int>(STATE_SPINNER_POSITION) ?: 0
         set(value) {
             field = value

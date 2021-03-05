@@ -39,8 +39,6 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Loading saved state from VM
-        binding.editText.setText(viewModel.editTextState)
 
         binding.destinationsRecyclerView.apply {
             adapter = destinationsRecyclerAdapter
