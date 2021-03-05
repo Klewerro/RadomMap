@@ -18,8 +18,6 @@ class FirebaseRepository: BaseRepository {
     private val _downloadStatus = MutableLiveData<Int>(0)
     override val downloadStatus: LiveData<Int> = _downloadStatus
 
-    var test = true
-
     init {
         getAllInterestCategories()
         getAllInterestPoints()
@@ -27,7 +25,6 @@ class FirebaseRepository: BaseRepository {
 
 
     override fun getAllInterestCategories() {
-        //val result = MutableLiveData<List<InterestCategory>>()
         firestore.collection("categories")
             .get()
             .addOnSuccessListener {
@@ -42,18 +39,12 @@ class FirebaseRepository: BaseRepository {
     }
 
     override fun getAllInterestPoints() {
-        //val result = MutableLiveData<List<InterestPoint>>()
         firestore.collection("points")
             .get()
             .addOnSuccessListener {
                 val points = it.toObjects(InterestPoint::class.java)
-                if (test) {
-                    test = false
-                    _downloadStatus.postValue(-1)
-                } else {
-                    _interestPoints.postValue(points)
-                    increaseStatus(downloadStatus.value!!)
-                }
+                _interestPoints.postValue(points)
+                increaseStatus(downloadStatus.value!!)
 
             }
             .addOnFailureListener {
