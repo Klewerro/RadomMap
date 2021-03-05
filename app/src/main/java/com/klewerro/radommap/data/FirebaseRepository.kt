@@ -15,8 +15,8 @@ class FirebaseRepository: BaseRepository {
     private val _interestCategories = MutableLiveData<List<InterestCategory>>()
     override val interestCategories: LiveData<List<InterestCategory>> = _interestCategories
 
-    private val _downloadStatus = MutableLiveData<Int>(0)
-    override val downloadStatus: LiveData<Int> = _downloadStatus
+    private val _downloadStatus = MutableLiveData(DownloadStatus.STARTED)
+    override val downloadStatus: LiveData<DownloadStatus> = _downloadStatus
 
     init {
         getAllInterestCategories()
@@ -31,15 +31,17 @@ class FirebaseRepository: BaseRepository {
                 val categories = it.toObjects(InterestCategory::class.java)
 
                 if (it.metadata.isFromCache && categories.isEmpty()) {
-                    _downloadStatus.postValue(-1)
+                    _downloadStatus.postValue(DownloadStatus.ERROR)
                 } else {
                     _interestCategories.postValue(categories)
                     increaseStatus(downloadStatus.value!!)
+                    if (it.metadata.isFromCache)
+                        _downloadStatus.postValue(DownloadStatus.CACHE)
                 }
             }
             .addOnFailureListener {
                 Log.e(TAG, "getAllInterestCategories: Exception - ${it.message}", it)
-                _downloadStatus.postValue(-1)
+                _downloadStatus.postValue(DownloadStatus.ERROR)
             }
     }
 
@@ -50,25 +52,27 @@ class FirebaseRepository: BaseRepository {
                 val points = it.toObjects(InterestPoint::class.java)
 
                 if (it.metadata.isFromCache && points.isEmpty()) {
-                    _downloadStatus.postValue(-1)
+                    _downloadStatus.postValue(DownloadStatus.ERROR)
                 } else {
                     _interestPoints.postValue(points)
                     increaseStatus(downloadStatus.value!!)
+                    if (it.metadata.isFromCache)
+                        _downloadStatus.postValue(DownloadStatus.CACHE)
                 }
             }
             .addOnFailureListener {
                 Log.e(TAG, "getAllInterestPoints: Exception - ${it.message}", it)
-                _downloadStatus.postValue(-1)
+                _downloadStatus.postValue(DownloadStatus.ERROR)
             }
     }
 
-    override fun increaseStatus(value: Int) {
-        if (_downloadStatus.value != -1)
-            _downloadStatus.value = value + 1
+    override fun increaseStatus(value: DownloadStatus) {
+        if (_downloadStatus.value != DownloadStatus.ERROR)
+            _downloadStatus.value = DownloadStatus.getByValue(value.value + 1)
     }
 
     override fun resetDownloadStatus() {
-        _downloadStatus.value = 0
+        _downloadStatus.value = DownloadStatus.STARTED
     }
 
     companion object {

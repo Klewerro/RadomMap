@@ -2,9 +2,7 @@ package com.klewerro.radommap.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
@@ -13,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.klewerro.radommap.R
+import com.klewerro.radommap.data.DownloadStatus
 import com.klewerro.radommap.data.InterestPoint
 import com.klewerro.radommap.databinding.FragmentDestinationsBinding
 import com.klewerro.radommap.utils.ExtensionFunctions.setFragmentSubtitle
@@ -87,23 +87,24 @@ class DestinationsFragment : Fragment(), DestinationsRecyclerAdapter.OnDestinati
 
         viewModel.downloadStatus.observe(viewLifecycleOwner) { status ->
             when(status) {
-                0 -> {
+                DownloadStatus.STARTED -> {
                     binding.contentLinearLayout.isVisible = false
                     binding.loadingLayout.root.isVisible = true
                     binding.loadingLayout.progressBar.isVisible = true
                     binding.loadingLayout.progressStatusTextView.text = getString(R.string.fetching_data, 0, 2)
                 }
-                1 -> {
+                DownloadStatus.PROGRESS_1 -> {
                     binding.loadingLayout.progressStatusTextView.text = getString(R.string.fetching_data, 1, 2)
                 }
-                2 -> {
+                DownloadStatus.FINISHED_SUCCESSFULLY -> {
                     binding.contentLinearLayout.isVisible = true
                     binding.loadingLayout.root.isVisible = false
                 }
-                -1 -> {
+                DownloadStatus.ERROR -> {
                     binding.loadingLayout.progressBar.isVisible = false
                     binding.loadingLayout.progressStatusTextView.text = getString(R.string.error_fetching_data_try_again)
                 }
+                DownloadStatus.CACHE -> Snackbar.make(requireView(), getString(R.string.data_loaded_from_cache), Snackbar.LENGTH_LONG).show()
             }
         }
     }

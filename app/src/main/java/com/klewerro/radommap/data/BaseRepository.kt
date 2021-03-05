@@ -5,10 +5,10 @@ import androidx.lifecycle.LiveData
 interface BaseRepository {
     val interestPoints: LiveData<List<InterestPoint>>
     val interestCategories: LiveData<List<InterestCategory>>
-    val downloadStatus: LiveData<Int>
+    val downloadStatus: LiveData<DownloadStatus>
 
     fun getAllInterestCategories()
     fun getAllInterestPoints()
-    fun increaseStatus(value: Int)
+    fun increaseStatus(value: DownloadStatus)
     fun resetDownloadStatus()
 }

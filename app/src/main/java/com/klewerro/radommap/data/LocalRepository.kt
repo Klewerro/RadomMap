@@ -11,8 +11,8 @@ class LocalRepository: BaseRepository {
     private val _interestCategories = MutableLiveData<List<InterestCategory>>()
     override val interestCategories: LiveData<List<InterestCategory>> = _interestCategories
 
-    private val _downloadStatus = MutableLiveData<Int>(0)
-    override val downloadStatus: LiveData<Int> = _downloadStatus
+    private val _downloadStatus = MutableLiveData(DownloadStatus.STARTED)
+    override val downloadStatus: LiveData<DownloadStatus> = _downloadStatus
 
     private var forceFirstFetchFailure = false  //true
 
@@ -35,7 +35,7 @@ class LocalRepository: BaseRepository {
     override fun getAllInterestPoints() {
         if (forceFirstFetchFailure) {
             forceFirstFetchFailure = false
-            _downloadStatus.postValue(-1);
+            _downloadStatus.postValue(DownloadStatus.ERROR);
         } else {
             val i1 = InterestPoint("1", "Punkt1", "Opis wybranej lokalizacji 1", "https://www.google.pl/", null, "1" )
             val i2 = InterestPoint("2", "Punkt2", "Opis wybranej lokalizacji 2", "https://www.google.pl/",null, "1")
@@ -48,12 +48,12 @@ class LocalRepository: BaseRepository {
         }
     }
 
-    override fun increaseStatus(value: Int) {
-        if (_downloadStatus.value != -1)
-            _downloadStatus.value = value + 1
+    override fun increaseStatus(value: DownloadStatus) {
+        if (_downloadStatus.value != DownloadStatus.ERROR)
+            _downloadStatus.value = DownloadStatus.getByValue(value.value + 1)
     }
 
     override fun resetDownloadStatus() {
-        _downloadStatus.value = 0
+        _downloadStatus.value = DownloadStatus.STARTED
     }
 }

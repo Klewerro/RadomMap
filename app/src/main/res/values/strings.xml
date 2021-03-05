@@ -5,4 +5,5 @@
     <string name="fetching_data">Fetching data from Firebase [%1$d/%2$d]</string>
     <string name="error_fetching_data_try_again">Error while fetching data from Firebase. Please try again.</string>
     <string name="webpage">webpage</string>
+    <string name="data_loaded_from_cache">Data loaded from cache.</string>
 </resources>
