@@ -29,8 +29,13 @@ class FirebaseRepository: BaseRepository {
             .get()
             .addOnSuccessListener {
                 val categories = it.toObjects(InterestCategory::class.java)
-                _interestCategories.postValue(categories)
-                increaseStatus(downloadStatus.value!!)
+
+                if (it.metadata.isFromCache && categories.isEmpty()) {
+                    _downloadStatus.postValue(-1)
+                } else {
+                    _interestCategories.postValue(categories)
+                    increaseStatus(downloadStatus.value!!)
+                }
             }
             .addOnFailureListener {
                 Log.e(TAG, "getAllInterestCategories: Exception - ${it.message}", it)
@@ -43,9 +48,13 @@ class FirebaseRepository: BaseRepository {
             .get()
             .addOnSuccessListener {
                 val points = it.toObjects(InterestPoint::class.java)
-                _interestPoints.postValue(points)
-                increaseStatus(downloadStatus.value!!)
 
+                if (it.metadata.isFromCache && points.isEmpty()) {
+                    _downloadStatus.postValue(-1)
+                } else {
+                    _interestPoints.postValue(points)
+                    increaseStatus(downloadStatus.value!!)
+                }
             }
             .addOnFailureListener {
                 Log.e(TAG, "getAllInterestPoints: Exception - ${it.message}", it)

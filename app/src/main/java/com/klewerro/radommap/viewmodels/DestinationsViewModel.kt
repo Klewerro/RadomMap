@@ -51,10 +51,12 @@ class DestinationsViewModel @Inject constructor(
             return
         }
 
-        val selectedCategory = interestCategories.value!!.get(position)
-        _selectedCategory.postValue(selectedCategory)
-        _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
-        selectedSpinnerPosition = position
+        if (interestCategories.value?.isNotEmpty() == true) {
+            val selectedCategory = interestCategories.value?.get(position)
+            _selectedCategory.postValue(selectedCategory)
+            _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory?.id!!))
+            selectedSpinnerPosition = position
+        }
     }
 
     fun reFetchData() {
@@ -69,9 +71,11 @@ class DestinationsViewModel @Inject constructor(
             selectedSpinnerPosition = 0
         }
 
-        val selectedCategory = interestCategories.value!!.get(selectedSpinnerPosition)
-        _selectedCategory.postValue(selectedCategory)
-        _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory.id!!))
+        if (interestCategories.value?.isNotEmpty() == true) {
+            val selectedCategory = interestCategories.value?.get(selectedSpinnerPosition)
+            _selectedCategory.postValue(selectedCategory)
+            _categoryInterestPoints.postValue(getSelectedInterestPoints(selectedCategory?.id!!))
+        }
     }
 
     private fun getSelectedInterestPoints(id: String): List<InterestPoint> {
